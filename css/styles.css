@@ -143,15 +143,19 @@ body {
   margin-bottom: 6px;
 }
 .input-wrap { position: relative; }
-.input-wrap svg.leading-icon {
+.input-wrap .leading-icon {
   position: absolute;
   left: 12px;
   top: 50%;
   transform: translateY(-50%);
-  width: 17px;
-  height: 17px;
   color: var(--ink-500);
   pointer-events: none;
+  display: flex;
+}
+.input-wrap .leading-icon svg {
+  width: 17px;
+  height: 17px;
+  display: block;
 }
 input[type="text"],
 input[type="email"],
@@ -184,6 +188,7 @@ input:focus {
   margin-top: 6px;
 }
 .field.error .field-error { display: flex; }
+.field-error svg { width: 14px; height: 14px; flex-shrink: 0; display: block; }
 
 .toggle-visibility {
   position: absolute;
@@ -198,6 +203,7 @@ input:focus {
   display: flex;
 }
 .toggle-visibility:hover { color: var(--ink-900); }
+.toggle-visibility svg { width: 17px; height: 17px; display: block; }
 
 .pw-rules {
   list-style: none;
@@ -266,6 +272,7 @@ input:focus {
   border: 1px solid var(--ink-300);
 }
 .btn-secondary:hover { background: var(--ink-100); }
+.btn-secondary svg { width: 18px; height: 18px; display: block; }
 .btn-spacer { margin-top: 10px; }
 
 .divider {
