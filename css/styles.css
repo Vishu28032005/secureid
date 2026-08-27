@@ -40,11 +40,16 @@ html, body {
 }
 
 body {
+  background: var(--ink-50);
+  color: var(--ink-900);
+}
+
+.page-content {
   background:
     radial-gradient(1200px 600px at 15% -10%, var(--brand-100), transparent 60%),
     radial-gradient(1000px 500px at 100% 110%, #ede9fe, transparent 55%),
     var(--ink-50);
-  color: var(--ink-900);
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,6 +59,55 @@ body {
 .auth-shell {
   width: 100%;
   max-width: 420px;
+}
+
+/* ---------------- Desktop / "web" split-screen brand panel ---------------- */
+/* Matches the WEB LOGIN SCREENS mock: a fixed blue brand panel on the left,
+   the auth card centered in the remaining space on the right. Below the
+   breakpoint (mobile/tablet) the panel is hidden and layout is unchanged. */
+.brand-panel { display: none; }
+
+@media (min-width: 900px) {
+  .brand-mark { display: none; }
+
+  .brand-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: clamp(320px, 38vw, 460px);
+    padding: 44px 40px;
+    color: #fff;
+    background:
+      radial-gradient(700px 400px at 15% 0%, rgba(255,255,255,.10), transparent 60%),
+      linear-gradient(160deg, var(--brand-600), var(--brand-700) 65%, #2f2a86);
+  }
+
+  .brand-panel-top { display: flex; align-items: center; gap: 10px; }
+  .brand-panel-icon svg { width: 24px; height: 24px; display: block; }
+  .brand-panel-tag { font-weight: 700; font-size: 17px; letter-spacing: -.01em; }
+
+  .brand-panel-mid { max-width: 320px; }
+  .brand-panel-icon-lg {
+    width: 56px; height: 56px;
+    border-radius: 16px;
+    background: rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 22px;
+  }
+  .brand-panel-icon-lg svg { width: 28px; height: 28px; display: block; }
+  .brand-panel-mid h2 { font-size: 26px; margin: 0 0 10px; letter-spacing: -.01em; }
+  .brand-panel-mid p { font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,.8); margin: 0; }
+
+  .brand-panel-copy { font-size: 12.5px; color: rgba(255,255,255,.55); margin: 0; }
+
+  .page-content {
+    margin-left: clamp(320px, 38vw, 460px);
+    background:
+      radial-gradient(900px 500px at 100% 0%, #ede9fe, transparent 55%),
+      var(--ink-50);
+  }
 }
 
 /* ---------------- Brand mark ---------------- */

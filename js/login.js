@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#togglePw').innerHTML = icon('eye');
   $('#googleIcon').innerHTML = icon('google');
   $('#shieldIcon2').innerHTML = icon('shield');
+  $('#brandPanelIcon').innerHTML = icon('shield');
+  $('#brandPanelIconLg').innerHTML = icon('shield');
   $('.card-icon.success').innerHTML = icon('checkCircle');
   $$('.err-icon').forEach((el) => { el.innerHTML = icon('alertCircle'); el.style.display = 'inline-flex'; });
   $$('.m-icon').forEach((el) => { el.innerHTML = icon(el.dataset.icon); });

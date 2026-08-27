@@ -52,6 +52,8 @@ function renderStaticIcons() {
   $$('[data-icon]').forEach((el) => { el.innerHTML = icon(el.dataset.icon); });
   $('.card-icon.success').innerHTML = icon('checkCircle');
   $('#mfaChooseIcon').innerHTML = icon('shield');
+  $('#brandPanelIcon').innerHTML = icon('shield');
+  $('#brandPanelIconLg').innerHTML = icon('shield');
   $$('.err-icon').forEach((el) => { el.innerHTML = icon('alertCircle'); el.style.display = 'inline-flex'; });
   $$('#successList .li-icon').forEach((el) => { el.innerHTML = icon('checkCircle'); });
 }
