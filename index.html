@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login — SecureID</title>
+<meta name="description" content="Sign in to your SecureID account" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <div class="auth-shell">
+    <div class="brand-mark" id="brandMark"></div>
+
+    <main class="card" id="loginApp">
+
+      <!-- SCREEN 1 & 2: Login (default) / Invalid credentials -->
+      <!-- Both screens share one form; the "invalid" look is just its error state. -->
+      <section data-screen="login">
+        <h1 class="card-title">Welcome back!</h1>
+        <p class="card-subtitle">Log in to your account</p>
+
+        <form id="loginForm" novalidate>
+          <div class="field" id="fieldIdentifier">
+            <label for="identifier">Email or username</label>
+            <div class="input-wrap">
+              <span class="leading-icon" id="idIcon"></span>
+              <input type="text" id="identifier" name="identifier" autocomplete="username" placeholder="you@company.com" />
+            </div>
+            <p class="field-error"><span class="err-icon"></span><span>Invalid email or password. Please try again.</span></p>
+          </div>
+
+          <div class="field" id="fieldPassword">
+            <label for="password">Password</label>
+            <div class="input-wrap">
+              <span class="leading-icon" id="pwIcon"></span>
+              <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••" />
+              <button type="button" class="toggle-visibility" id="togglePw" aria-label="Show password"></button>
+            </div>
+          </div>
+
+          <div class="row-between">
+            <label class="checkbox-row" style="align-items:center">
+              <input type="checkbox" id="rememberMe" /> Remember me
+            </label>
+            <a href="#" class="link" id="forgotPwLink">Forgot password?</a>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="loginSubmit">Login</button>
+        </form>
+
+        <div class="divider">or</div>
+        <button type="button" class="btn btn-secondary" id="googleBtn"><span id="googleIcon"></span> Continue with Google</button>
+
+        <p class="foot-note">New here? <a href="register.html" class="link">Create an account</a></p>
+      </section>
+
+      <!-- SCREEN 3: Choose verification method -->
+      <section data-screen="choose-method" class="hidden">
+        <div class="back-row">
+          <button type="button" class="back-btn" data-back="login">&larr;</button>
+        </div>
+        <div class="card-icon brand" id="shieldIcon2"></div>
+        <h1 class="card-title">Verify your identity</h1>
+        <p class="card-subtitle">Choose a method to continue</p>
+
+        <div class="method-list" id="methodList" role="radiogroup" aria-label="Verification method">
+          <label class="method-card selected" data-method="email">
+            <span class="m-icon" data-icon="mail"></span>
+            <span class="m-text">
+              <span class="m-title">Email OTP</span>
+              <span class="m-sub">Receive a code on your email</span>
+            </span>
+            <input type="radio" name="method" value="email" class="sr-only" checked />
+            <span class="m-radio"></span>
+          </label>
+          <label class="method-card" data-method="sms">
+            <span class="m-icon" data-icon="phone"></span>
+            <span class="m-text">
+              <span class="m-title">SMS OTP</span>
+              <span class="m-sub">Receive a code on your mobile</span>
+            </span>
+            <input type="radio" name="method" value="sms" class="sr-only" />
+            <span class="m-radio"></span>
+          </label>
+          <label class="method-card" data-method="authenticator">
+            <span class="m-icon" data-icon="key"></span>
+            <span class="m-text">
+              <span class="m-title">Authenticator App</span>
+              <span class="m-sub">Use a code from your authenticator</span>
+            </span>
+            <input type="radio" name="method" value="authenticator" class="sr-only" />
+            <span class="m-radio"></span>
+          </label>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="continueMethod">Continue</button>
+      </section>
+
+      <!-- SCREENS 4 / 5 / 6: OTP entry, wrong code, and expired states -->
+      <!-- One screen, driven by otpState in login.js, instead of 3 near-duplicate screens. -->
+      <section data-screen="otp" class="hidden">
+        <div class="back-row">
+          <button type="button" class="back-btn" data-back="choose-method">&larr;</button>
+        </div>
+        <div class="card-icon brand" id="otpIcon"></div>
+        <h1 class="card-title" id="otpTitle">Verify your email</h1>
+        <p class="card-subtitle">We have sent a 6-digit code to your email<br /><strong id="otpDestination">priya.sharma@email.com</strong></p>
+
+        <div class="otp-row" id="otpRow">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+        </div>
+        <p class="otp-msg" id="otpMsg"></p>
+
+        <p class="otp-meta">
+          <span id="otpExpiryLabel">Code expires in <span class="timer" id="otpTimer">02:45</span></span><br />
+          Didn't receive the code? <button type="button" class="link-btn" id="resendBtn">Resend code</button>
+        </p>
+
+        <button type="button" class="btn btn-primary" id="verifyOtpBtn" disabled>Verify &amp; Login</button>
+      </section>
+
+      <!-- SUCCESS -->
+      <section data-screen="success" class="hidden">
+        <div class="card-icon success"></div>
+        <h1 class="card-title">You're logged in</h1>
+        <p class="card-subtitle">Welcome back — identity verified successfully.</p>
+        <button type="button" class="btn btn-primary" id="restartBtn">Log out &amp; try again</button>
+      </section>
+
+    </main>
+
+    <p class="demo-hint">
+      Demo credentials: <code>demo@secureid.io</code> / <code>Passw0rd!</code> &middot;
+      OTP for every step: <code>482913</code>
+    </p>
+  </div>
+
+<script src="js/icons.js"></script>
+<script src="js/common.js"></script>
+<script src="js/login.js"></script>
+</body>
+</html>

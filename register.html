@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Create account — SecureID</title>
+<meta name="description" content="Create your SecureID account" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <div class="auth-shell">
+    <div class="brand-mark" id="brandMark"></div>
+
+    <main class="card" id="registerApp">
+
+      <div class="step-track" id="stepTrack" aria-hidden="true">
+        <span class="dot" data-step="1"></span>
+        <span class="dot" data-step="2"></span>
+        <span class="dot" data-step="3"></span>
+        <span class="dot" data-step="4"></span>
+        <span class="dot" data-step="5"></span>
+      </div>
+
+      <!-- SCREEN 1: Register — details -->
+      <section data-screen="details">
+        <h1 class="card-title">Create your account</h1>
+        <p class="card-subtitle">Let's get you started</p>
+
+        <form id="detailsForm" novalidate>
+          <div class="field" id="fieldName">
+            <label for="fullName">Full name</label>
+            <div class="input-wrap">
+              <span class="leading-icon" data-icon="user"></span>
+              <input type="text" id="fullName" name="fullName" autocomplete="name" placeholder="Priya Sharma" />
+            </div>
+            <p class="field-error"><span class="err-icon"></span><span>Enter your full name.</span></p>
+          </div>
+
+          <div class="field" id="fieldEmail">
+            <label for="regEmail">Email</label>
+            <div class="input-wrap">
+              <span class="leading-icon" data-icon="mail"></span>
+              <input type="email" id="regEmail" name="regEmail" autocomplete="email" placeholder="priya.sharma@email.com" />
+            </div>
+            <p class="field-error"><span class="err-icon"></span><span>Enter a valid email address.</span></p>
+          </div>
+
+          <div class="field" id="fieldMobile">
+            <label for="regMobile">Mobile number</label>
+            <div class="input-wrap">
+              <span class="leading-icon" data-icon="phone"></span>
+              <input type="tel" id="regMobile" name="regMobile" autocomplete="tel" placeholder="+91 98765 43210" />
+            </div>
+            <p class="field-error"><span class="err-icon"></span><span>Enter a valid 10-digit mobile number.</span></p>
+          </div>
+
+          <div class="field" id="fieldPassword">
+            <label for="regPassword">Password</label>
+            <div class="input-wrap">
+              <span class="leading-icon" data-icon="lock"></span>
+              <input type="password" id="regPassword" name="regPassword" autocomplete="new-password" placeholder="••••••••" />
+              <button type="button" class="toggle-visibility" id="toggleRegPw" aria-label="Show password"></button>
+            </div>
+            <ul class="pw-rules" id="pwRules">
+              <li data-rule="len"><span class="rule-icon"></span>At least 8 characters</li>
+              <li data-rule="upper"><span class="rule-icon"></span>1 uppercase letter</li>
+              <li data-rule="num"><span class="rule-icon"></span>1 number</li>
+              <li data-rule="special"><span class="rule-icon"></span>1 special character</li>
+            </ul>
+          </div>
+
+          <label class="checkbox-row" style="margin-bottom:18px">
+            <input type="checkbox" id="agreeTerms" />
+            <span>I agree to the <a href="#" class="link" onclick="event.preventDefault()">Terms &amp; Conditions</a> and <a href="#" class="link" onclick="event.preventDefault()">Privacy Policy</a></span>
+          </label>
+
+          <button type="submit" class="btn btn-primary" id="createAccountBtn">Create Account</button>
+        </form>
+
+        <p class="foot-note">Already have an account? <a href="index.html" class="link">Login</a></p>
+      </section>
+
+      <!-- SCREENS 2 / 2a / 2b — Email OTP (default / wrong / expired)
+           SCREENS 3 / 3a / 3b — Mobile OTP (default / wrong / max attempts)
+           One reusable screen, driven by otp.phase in register.js -->
+      <section data-screen="otp" class="hidden">
+        <div class="back-row">
+          <button type="button" class="back-btn" id="otpBack">&larr;</button>
+        </div>
+        <div class="card-icon brand" id="otpIcon"></div>
+        <h1 class="card-title" id="otpTitle">Verify your email</h1>
+        <p class="card-subtitle">We have sent a 6-digit code to<br /><strong id="otpDestination"></strong></p>
+
+        <div class="otp-row" id="otpRow">
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 1" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 3" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 4" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 5" />
+          <input type="text" inputmode="numeric" maxlength="1" aria-label="Digit 6" />
+        </div>
+        <p class="otp-msg" id="otpMsg"></p>
+
+        <p class="otp-meta">
+          <span id="otpExpiryLabel">Code expires in <span class="timer" id="otpTimer">02:45</span></span><br />
+          <span id="otpResendLine">Didn't receive the code? <button type="button" class="link-btn" id="resendBtn">Resend code</button></span>
+        </p>
+
+        <button type="button" class="btn btn-primary" id="verifyOtpBtn" disabled>Continue</button>
+        <p class="foot-note" id="wrongNumberRow" style="display:none">Wrong number? <a href="#" class="link" id="changeNumberLink">Change</a></p>
+      </section>
+
+      <!-- SCREEN 4: Set up MFA -->
+      <section data-screen="mfa-choose" class="hidden">
+        <div class="card-icon brand" id="mfaChooseIcon"></div>
+        <h1 class="card-title">Set up Multi-Factor Auth</h1>
+        <p class="card-subtitle">Add an extra layer of security to protect your account</p>
+
+        <div class="mfa-option-list" id="mfaOptionList">
+          <label class="mfa-option">
+            <span class="m-icon" data-icon="key"></span>
+            <span class="m-text">
+              <span class="m-title">Authenticator App</span>
+              <span class="m-sub">Google Authenticator, Authy, etc.</span>
+            </span>
+            <input type="radio" name="mfaMethod" value="authenticator" checked />
+          </label>
+          <label class="mfa-option">
+            <span class="m-icon" data-icon="phone"></span>
+            <span class="m-text">
+              <span class="m-title">SMS Authentication</span>
+              <span class="m-sub">Receive codes on your mobile</span>
+            </span>
+            <input type="radio" name="mfaMethod" value="sms" />
+          </label>
+          <label class="mfa-option">
+            <span class="m-icon" data-icon="mail"></span>
+            <span class="m-text">
+              <span class="m-title">Email Authentication</span>
+              <span class="m-sub">Receive codes on your email</span>
+            </span>
+            <input type="radio" name="mfaMethod" value="email" />
+          </label>
+        </div>
+
+        <button type="button" class="btn btn-primary" id="mfaContinueBtn">Continue</button>
+      </section>
+
+      <!-- SCREEN 5: Authenticator setup (QR) -->
+      <section data-screen="authenticator-setup" class="hidden">
+        <div class="back-row">
+          <button type="button" class="back-btn" data-back="mfa-choose">&larr;</button>
+        </div>
+        <h1 class="card-title">Scan QR Code</h1>
+        <p class="card-subtitle">Open your authenticator app and scan this QR code</p>
+
+        <div class="qr-box" id="qrBox"></div>
+
+        <p class="foot-note" style="margin-top:0">
+          <button type="button" class="link-btn" id="toggleSetupKey" style="background:none;border:none;color:var(--brand-600);font-weight:600;font-size:13.5px;cursor:pointer">Can't scan? Enter setup key</button>
+        </p>
+        <div class="secret-key hidden" id="secretKeyBox">JBSW Y3DP EHPK 3PXP</div>
+
+        <button type="button" class="btn btn-primary" id="authSetupContinue">Continue</button>
+      </section>
+
+      <!-- SCREEN 6 / 6a: MFA verification (default / wrong code) — reuses the OTP screen too -->
+
+      <!-- SCREEN 7: Registration success -->
+      <section data-screen="success" class="hidden">
+        <div class="card-icon success" id="successIcon"></div>
+        <h1 class="card-title">Account created!</h1>
+        <p class="card-subtitle">Your account has been created successfully and MFA is enabled.</p>
+
+        <ul class="success-list" id="successList">
+          <li><span class="li-icon"></span>Email verified</li>
+          <li><span class="li-icon"></span>Mobile verified</li>
+          <li><span class="li-icon"></span>MFA enabled</li>
+        </ul>
+
+        <a href="index.html" class="btn btn-primary" style="text-decoration:none" id="continueToLogin">Continue to Login</a>
+      </section>
+
+    </main>
+
+    <p class="demo-hint">
+      Every OTP / authenticator code in this demo is <code>482913</code>.
+      Mobile OTP locks after 3 wrong attempts (matches the "max attempts" mock).
+    </p>
+  </div>
+
+<script src="js/icons.js"></script>
+<script src="js/common.js"></script>
+<script src="js/register.js"></script>
+</body>
+</html>
